@@ -12,11 +12,33 @@ const Community = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch(
+        "https://n8n.srv865543.hstgr.cloud/webhook-test/1677bbfe-a941-4fbe-9ef8-05f5ef9a9da2",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            source: "Bella Forma Community",
+            timestamp: new Date().toISOString(),
+          }),
+        }
+      );
 
-    toast.success("¡Bienvenida a la comunidad Bella Forma!");
-    setEmail("");
-    setIsSubmitting(false);
+      if (response.ok) {
+        toast.success("¡Bienvenida a la comunidad Bella Forma!");
+        setEmail("");
+      } else {
+        toast.error("Hubo un error. Por favor intenta de nuevo.");
+      }
+    } catch (error) {
+      toast.error("No se pudo conectar. Intenta más tarde.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
