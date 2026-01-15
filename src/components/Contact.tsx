@@ -4,6 +4,42 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Send, MessageCircle } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const countryCodes = [
+  // Latinoamérica
+  { code: "+54", country: "Argentina" },
+  { code: "+591", country: "Bolivia" },
+  { code: "+55", country: "Brasil" },
+  { code: "+56", country: "Chile" },
+  { code: "+57", country: "Colombia" },
+  { code: "+506", country: "Costa Rica" },
+  { code: "+53", country: "Cuba" },
+  { code: "+593", country: "Ecuador" },
+  { code: "+503", country: "El Salvador" },
+  { code: "+502", country: "Guatemala" },
+  { code: "+504", country: "Honduras" },
+  { code: "+52", country: "México" },
+  { code: "+505", country: "Nicaragua" },
+  { code: "+507", country: "Panamá" },
+  { code: "+595", country: "Paraguay" },
+  { code: "+51", country: "Perú" },
+  { code: "+1809", country: "República Dominicana" },
+  { code: "+598", country: "Uruguay" },
+  { code: "+58", country: "Venezuela" },
+  // Europa (sin España)
+  { code: "+33", country: "Francia" },
+  { code: "+49", country: "Alemania" },
+  { code: "+39", country: "Italia" },
+  { code: "+351", country: "Portugal" },
+  { code: "+44", country: "Reino Unido" },
+];
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,18 +48,45 @@ const Contact = () => {
     phone: "",
     message: "",
   });
+  const [countryCode, setCountryCode] = useState("+51");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const fullPhone = formData.phone ? `${countryCode} ${formData.phone}` : "";
+      
+      const response = await fetch(
+        "https://n8n.srv865543.hstgr.cloud/webhook-test/35fddf6f-5a86-4737-a798-3e195f81aee7",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: fullPhone,
+            message: formData.message.trim(),
+            source: "Bella Forma Contact",
+            timestamp: new Date().toISOString(),
+          }),
+        }
+      );
 
-    toast.success("¡Mensaje enviado! Te contactaremos pronto.");
-    setFormData({ name: "", email: "", phone: "", message: "" });
-    setIsSubmitting(false);
+      if (response.ok) {
+        toast.success("¡Mensaje enviado! Te contactaremos pronto.");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        toast.error("Hubo un error. Por favor intenta de nuevo.");
+      }
+    } catch (error) {
+      toast.error("No se pudo conectar. Intenta más tarde.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -113,15 +176,29 @@ const Contact = () => {
               <label htmlFor="phone" className="text-sm tracking-wide block mb-2">
                 Teléfono (opcional)
               </label>
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleChange}
-                className="bg-background border-border focus:border-foreground"
-                placeholder="+51 999 888 777"
-              />
+              <div className="flex gap-2">
+                <Select value={countryCode} onValueChange={setCountryCode}>
+                  <SelectTrigger className="w-[180px] bg-background border-border">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border-border max-h-[300px]">
+                    {countryCodes.map((country) => (
+                      <SelectItem key={country.code} value={country.code}>
+                        {country.code} {country.country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="bg-background border-border focus:border-foreground flex-1"
+                  placeholder="999 888 777"
+                />
+              </div>
             </div>
 
             <div>
