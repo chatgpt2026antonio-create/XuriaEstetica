@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Products from "@/components/Products";
 import About from "@/components/About";
+import AppointmentsCTA from "@/components/AppointmentsCTA";
 import Location from "@/components/Location";
 import Contact from "@/components/Contact";
 import Community from "@/components/Community";
@@ -15,6 +16,7 @@ const Index = () => {
         <Hero />
         <Products />
         <About />
+        <AppointmentsCTA />
         <Location />
         <Contact />
         <Community />
