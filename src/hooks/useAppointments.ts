@@ -207,21 +207,18 @@ export const useAppointments = () => {
     }
   };
 
-  // Cancel an appointment
+  // Cancel an appointment - sends to webhook and deletes from database
   const cancelAppointment = async (appointment: Appointment): Promise<boolean> => {
     try {
-      // First, update in Supabase
-      const { error: updateError } = await supabase
-        .from("appointments")
-        .update({ status: "cancelled" })
-        .eq("id", appointment.id);
-
-      if (updateError) throw updateError;
-
-      // Send to webhook and wait for response
+      // Send to webhook with all appointment info
       const webhookData = {
         datetime: `${appointment.appointment_date}-${appointment.appointment_time.substring(0, 5).replace(":", "-")}`,
         appointment_id: appointment.id,
+        client_name: appointment.client_name,
+        client_email: appointment.client_email,
+        client_phone: appointment.client_phone,
+        appointment_date: appointment.appointment_date,
+        appointment_time: appointment.appointment_time,
       };
 
       try {
@@ -243,25 +240,21 @@ export const useAppointments = () => {
           throw new Error("Webhook responded with error");
         }
       } catch (webhookError) {
-        console.error("Webhook failed, reverting cancellation:", webhookError);
-        
-        // Revert the cancellation
-        await supabase
-          .from("appointments")
-          .update({ status: "active" })
-          .eq("id", appointment.id);
-
-        toast({
-          title: "Error",
-          description: "No se pudo completar la cancelación. Intenta de nuevo.",
-          variant: "destructive",
-        });
-        return false;
+        console.error("Webhook notification failed:", webhookError);
+        // Continue with deletion anyway - we don't want to block the user
       }
+
+      // Delete the appointment from Supabase
+      const { error: deleteError } = await supabase
+        .from("appointments")
+        .delete()
+        .eq("id", appointment.id);
+
+      if (deleteError) throw deleteError;
 
       toast({
         title: "Cita cancelada",
-        description: "Tu cita ha sido cancelada exitosamente.",
+        description: "Tu cita ha sido eliminada. Recibirás un correo de confirmación.",
       });
 
       return true;

@@ -158,22 +158,27 @@ const CancelForm = ({ onSearch, onCancel }: CancelFormProps) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>¿Cancelar esta cita?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta acción no se puede deshacer. La cita del{" "}
-              {confirmAppointment && (
-                <strong>
-                  {format(
-                    new Date(confirmAppointment.appointment_date),
-                    "dd 'de' MMMM",
-                    { locale: es }
-                  )}{" "}
-                  a las{" "}
-                  {formatTimeForDisplay(
-                    confirmAppointment.appointment_time.substring(0, 5)
-                  )}
-                </strong>
-              )}{" "}
-              será cancelada permanentemente.
+            <AlertDialogDescription className="space-y-3">
+              <span className="block">
+                La cita del{" "}
+                {confirmAppointment && (
+                  <strong>
+                    {format(
+                      new Date(confirmAppointment.appointment_date),
+                      "dd 'de' MMMM",
+                      { locale: es }
+                    )}{" "}
+                    a las{" "}
+                    {formatTimeForDisplay(
+                      confirmAppointment.appointment_time.substring(0, 5)
+                    )}
+                  </strong>
+                )}{" "}
+                será eliminada permanentemente.
+              </span>
+              <span className="block text-sm bg-muted p-3 rounded-md">
+                📧 Recibirás un correo electrónico confirmando la cancelación de tu cita.
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
