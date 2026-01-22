@@ -154,7 +154,7 @@ export const useAppointments = () => {
         const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         await fetch(
-          "https://n8n.srv865543.hstgr.cloud/webhook-test/generador_de_citas",
+          "https://n8n.srv865543.hstgr.cloud/webhook/generador_de_citas",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -226,7 +226,7 @@ export const useAppointments = () => {
         const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         const response = await fetch(
-          "https://n8n.srv865543.hstgr.cloud/webhook-test/eliminar_citas",
+          "https://n8n.srv865543.hstgr.cloud/webhook/eliminar_citas",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

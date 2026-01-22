@@ -14,7 +14,7 @@ const Community = () => {
 
     try {
       const response = await fetch(
-        "https://n8n.srv865543.hstgr.cloud/webhook-test/1677bbfe-a941-4fbe-9ef8-05f5ef9a9da2",
+        "https://n8n.srv865543.hstgr.cloud/webhook/Produccion_correos",
         {
           method: "POST",
           headers: {
