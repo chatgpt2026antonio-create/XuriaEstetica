@@ -13,7 +13,7 @@ const Hero = () => {
           className="w-full h-full object-cover"
         >
           <source
-            src="https://vxjaffnysitulaojvscz.supabase.co/storage/v1/object/public/Background/abstract_holographic_liquid_surface_with_flowing_iridescent.mp4"
+            src="https://vxjaffnysitulaojvscz.supabase.co/storage/v1/object/public/Background/a_perfectly_seamless_infinite_looping_holographic_background.mp4"
             type="video/mp4"
           />
         </video>
