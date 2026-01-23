@@ -1,16 +1,22 @@
-import heroImage from "@/assets/hero-shapewear.jpg";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Video */}
       <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Bella Forma - Fajas de alta calidad"
-          className="w-full h-full object-cover object-top"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source
+            src="https://vxjaffnysitulaojvscz.supabase.co/storage/v1/object/public/Background/abstract_holographic_liquid_surface_with_flowing_iridescent.mp4"
+            type="video/mp4"
+          />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
       </div>
 
