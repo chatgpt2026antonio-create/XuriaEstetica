@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X, ShoppingBag, Star } from "lucide-react";
+import TestimonialsDialog from "./TestimonialsDialog";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,17 @@ const Header = () => {
     { href: "#contacto", label: "Contacto" },
     { href: "#comunidad", label: "Comunidad" },
   ];
+
+  const TestimoniosButton = ({ className = "" }: { className?: string }) => (
+    <TestimonialsDialog>
+      <button
+        className={`flex items-center gap-1 text-sm tracking-widest uppercase hover:text-accent transition-colors duration-300 ${className}`}
+      >
+        <Star className="w-4 h-4" />
+        Testimonios
+      </button>
+    </TestimonialsDialog>
+  );
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -32,6 +44,7 @@ const Header = () => {
                 {link.label}
               </a>
             ))}
+            <TestimoniosButton />
           </nav>
 
           <div className="flex items-center gap-4">
@@ -63,6 +76,7 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
+              <TestimoniosButton className="py-2" />
             </div>
           </nav>
         )}
